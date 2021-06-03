@@ -7,15 +7,6 @@ import (
     "bytes"
 )
 
-type HTML_PAGE_t struct {
-    Title string
-}
-
-var page HTML_PAGE_t
-
-func InitFrontPage( title string ) {
-    page.Title = title
-}
 
 func checkRequestToken( r *http.Request  ) bool {
     cookie, err := r.Cookie( "token" )
@@ -34,7 +25,7 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
     if ! valid_token {
         // to login
         var b bytes.Buffer
-        err := t_login.Execute( &b, page )
+        err := t_login.Execute( &b, _page_data )
         if err != nil {
             fmt.Fprintf( w , err.Error() )
             return
