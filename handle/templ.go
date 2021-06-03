@@ -9,17 +9,22 @@ import (
 
 const PAGE_FOLDER="pages"
 
-//go:embed *
-var fsLogin embed.FS
+//go:embed pages/*.tmpl
+var embedFiles embed.FS
 
 var t_login *template.Template
 
 func init() {
-    // var t *template.Template
-    // t = template.New( tmpl_name  )
-    // must will panic if error occur
-    // t_login = template.Must( template.ParseFiles( []string { path.Join( PAGE_FOLDER, tmpl_name )  }... ) )
+    pages, err := embedFiles.ReadDir( PAGE_FOLDER  )
+    if err != nil {
+        log.Fatal(err)
+    }
+    for i, fe := range pages {
+        log.Println(i,fe.Name() )
+    }
+
+    // embedFiles are FS, use patters to filter files
+    t_login = template.Must( template.ParseFS( embedFiles, PAGE_FOLDER + "/login.tmpl"  ) )
     log.Printf("%+v", t_login )
-    // t_login = template.Must( template.ParseFS( fsLogin  ) )
 }
 
