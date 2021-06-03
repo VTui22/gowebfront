@@ -54,6 +54,9 @@ func main() {
     r.HandleFunc("/", catchAllHandler)
     r.HandleFunc("/doc", docHandler)
     r.HandleFunc("/iptest", ipTestHandler)
+
+    // 
+    handle.InitFrontPage( "游戏名" )
     r.HandleFunc("/pmadmin", handle.AdminHandler  )
 
 
@@ -62,4 +65,5 @@ func main() {
 
     webserver.StartServer(r, *listenPort, *verbose, GitCommit)
 }
+
 
