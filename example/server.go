@@ -57,7 +57,8 @@ func main() {
 
     // 
     handle.InitFrontPage( "游戏名" )
-    r.HandleFunc("/pmadmin", handle.AdminHandler  )
+    r.HandleFunc("/pmadmin", handle.AdminHandler )
+    r.HandleFunc("/pmadmin/login/{username:[A-Za-z0-9_-]+}/{password:[A-Za-z0-9_-]+}", handle.AdminLoginHandler )
 
 
     // r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))

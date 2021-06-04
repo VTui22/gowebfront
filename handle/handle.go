@@ -1,10 +1,13 @@
 package handle
 
 import (
+    "github.com/gorilla/mux"
     "net/http"
     "fmt"
     "log"
     "bytes"
+    // "encoding/json"
+    "time"
 )
 
 
@@ -34,5 +37,27 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     fmt.Fprintf(w, "admin" )
+}
+
+
+func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    username := vars["username"] // verified by mux route
+    password := vars["password"] // verified by mux route
+    // is valid user ?
+    log.Println( username, password )
+
+    token := "token"
+
+    // m := map[string]interface{} {}  // empty do nothing
+    // m["errcode"] = -1 
+    // b, _ := json.Marshal( &m )
+
+    // set cookie
+    expiration := time.Now().Add( 10 * time.Second)
+    cookie := http.Cookie{Name: "pmtoken",Value:token, Expires:expiration}
+    http.SetCookie(w, &cookie)
+
+    fmt.Fprintf(w, "{}" )
 }
 
