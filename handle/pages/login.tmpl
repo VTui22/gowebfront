@@ -11,48 +11,17 @@
 </header>
 
 <p><center>
+
+<form id="id_form_login">
+  <input type="hidden" name="action" value="login" />
   <div>User Name</div>
-  <input type="text" id="id_username" name="username" maxlength="12" placeholder="user name"><br>
+  <input type="text" id="id_username" name="username" minlength="3" maxlength="12" placeholder="user name"><br>
   <div>Password</div>
-  <input type="password" id="id_password" name="password" maxlength="16" placeholder="password"> <br>
+  <input type="password" id="id_password" name="password"  minlength="3" maxlength="16" placeholder="password"> <br>
   <br>
-  <input id="id_btn_login" type="button" value="LogIn" onclick="login();" />
+  <button type="submit" form="id_form_login">Login</button>
+</form>
 </center></p>
 
-<script type="text/javascript">
-function login() {
-    username = document.getElementById("id_username").value;
-    password = document.getElementById("id_password").value;
-    if ( username.length < 3 || password.length < 3   ) {
-        alert( "username/password is too short" ) ;
-        return ;
-    }
-    url = document.location.origin + document.location.pathname + "/login" + "/"+username + "/"+ password
-    fetch( url ,  {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: "{}" , 
-    })
-      .then(res => res.json()) 
-      .then(
-        (result) => {
-            if (result.err) {
-                let isconfirm = confirm( result.err ); 
-            } else {
-                /* let isconfirm = confirm( "operation successfully" );  */
-                window.location.reload(true);
-            }
-        },
-        (error) => {
-            alert( error ) ;
-        }
-      )
-}
-</script>
-
-    
 </body>
 </html>
