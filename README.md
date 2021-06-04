@@ -1,7 +1,7 @@
 # gowebfront
 
 ```
-├── handle   
+├── pmadin   
 │   ├── handle.go
 │   ├── pages
 │   │   └── login.tmpl
@@ -12,17 +12,38 @@
     └── funcmap.go
 ```
 
-- handle/tmplfunc
+- pmadmin/tmplfunc
     - useful function for handle html, css, js content in http/template
-- handle/templ.go
+- pmadmin/templ.go
     - load/init templates
-- handle/handle.go
+- pmadmin/handle.go
     - main handle
-- handle/pages
+- pmadmin/pages
     - template files
-- handle/static
+- pmadmin/static
     - css, js, etc...
 
+
+## useage 
+
+see example/server.go
+
+
+```go
+    pmadmin.InitKeyAndPage( "<secret_key>",  "游戏名", db.GetMysqlDB()  )
+    r.HandleFunc("/pmadmin", func(w http.ResponseWriter, r *http.Request) {
+        bNeedLogin := pmadmin.Login( w,r )
+        if bNeedLogin {
+            return
+        }
+        // your main page
+        fmt.Fprintf(w, "admin" )
+    } )
+
+
+    // r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+    dbconn.PrepareMysqlTable()
+```
 
 
 
