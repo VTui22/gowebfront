@@ -16,10 +16,11 @@
     <!-- hideen filed -->
     <input type="hidden" name="action" value="login" />
     <div>User Name</div>
-    <input type="text" id="id_username" name="username" minlength="3" maxlength="12" placeholder="user name"><br>
+    <!-- empty string will pass `minleng` checking, so add `required`  -->
+    <input type="text" id="id_username" name="username" minlength="3" maxlength="12" placeholder="user name" required>
     <div>Password</div>
-    <input type="password" id="id_password" name="password"  minlength="3" maxlength="16" placeholder="password"> <br>
-    <br>
+    <input type="password" id="id_password" name="password"  minlength="3" maxlength="16" placeholder="password" required>
+    <br> <br>
     <button type="submit" form="id_form_login">Login</button>
 </form>
 </center></p>
