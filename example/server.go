@@ -56,7 +56,7 @@ func main() {
     r.HandleFunc("/iptest", ipTestHandler)
 
     // 
-    pmadmin.InitKeyAndPage( "key",  "游戏名" )
+    pmadmin.InitKeyAndPage( "key",  "游戏名", db.GetMysqlDB()  )
     r.HandleFunc("/pmadmin", func(w http.ResponseWriter, r *http.Request) {
         bNeedLogin := pmadmin.Login( w,r )
         if bNeedLogin {

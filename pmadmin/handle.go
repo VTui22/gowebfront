@@ -1,11 +1,16 @@
 package pmadmin
 
 import (
-    "net/http"
-    // "fmt"
-    "log"
-    // "encoding/json"
-    "time"
+	"net/http"
+	"fmt"
+	"log"
+	// "encoding/json"
+    "strings"
+	"time"
+
+	"github.com/mebusy/gowebfront/dbconn"
+    "crypto/hmac"
+    "crypto/sha256"
 )
 
 
@@ -22,10 +27,35 @@ func CheckRequestToken( r *http.Request  ) bool {
         return false
     }
 
-    log.Printf("token cookie:%+v", cookie )
+    token := cookie.Value
+    log.Printf("pmtoken in cookie:%s", token )
+
+    items := strings.Split( token, "|" )
+    if len(items) != 2 {
+        return false
+    }
+    s1 := items[0]
+    s2 := items[1]
+
+    // check token
+    key := []byte( TOKEN_KEY )
+    mac := hmac.New(sha256.New, key)
+    s2_recalc := fmt.Sprintf("%x", mac.Sum([]byte(s1)) )
+    if s2 != s2_recalc {
+        return false
+    }
     return true
 }
 
+func generateToken( username string, exp_seconds int64 ) string {
+    s1 := fmt.Sprintf( "%s.%d", username, exp_seconds ) 
+
+    key := []byte( TOKEN_KEY )
+    mac := hmac.New(sha256.New, key)
+    s2 := fmt.Sprintf("%x", mac.Sum([]byte(s1)) )
+    // log.Println( "token raw string:", s1, "hmac len:%d",len(s2) )
+    return fmt.Sprintf( "%s|%s", s1, s2 )
+}
 
 // return is wheher need login
 func Login(w http.ResponseWriter, r *http.Request) bool {
@@ -33,18 +63,18 @@ func Login(w http.ResponseWriter, r *http.Request) bool {
     if ! valid_token {
         action := r.URL.Query().Get("action")
         if action == "login" {
-            bValiduser := true // TODO
+            username := r.URL.Query().Get("username")
+            password := r.URL.Query().Get("password")
+
+            bValiduser := dbconn.IsValidUser(username, password)
             if !bValiduser {
                 http.Redirect( w, r, r.URL.Path , http.StatusSeeOther )
                 return true
             }
 
-            username := r.URL.Query().Get("username")
-            password := r.URL.Query().Get("password")
-            log.Println( username, password )
-
-            token := "token"
             expiration := time.Now().Add( 10 * time.Second)
+            exp_seconds := expiration.UTC().Unix()
+            token := generateToken( username, exp_seconds )
             cookie := http.Cookie{Name: PM_TOKEN_NAME, Value:token, Expires:expiration}
             http.SetCookie(w, &cookie)
 

@@ -1,6 +1,7 @@
 package pmadmin
 
 import (
+    "database/sql"
 	"html/template"
 	// "path"
 	"embed"
@@ -51,8 +52,8 @@ type HTML_PAGE_t struct {
 
 var _page_data HTML_PAGE_t
 
-func InitKeyAndPage( key string, title string ) {
-    dbconn.PrepareLoginTable()
+func InitKeyAndPage( key string, title string, db *sql.DB ) {
+    dbconn.PrepareLoginTable( db )
     _page_data.Title = title
     _page_data.Css = css
     TOKEN_KEY = key
