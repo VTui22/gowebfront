@@ -7,7 +7,6 @@ import (
 	"embed"
 	// "log"
 
-	"github.com/mebusy/gowebfront/dbconn"
 	"github.com/mebusy/gowebfront/tmplfunc"
 )
 
@@ -53,7 +52,7 @@ type HTML_PAGE_t struct {
 var _page_data HTML_PAGE_t
 
 func InitKeyAndPage( key string, title string, db *sql.DB ) {
-    dbconn.PrepareLoginTable( db )
+    prepareLoginTable( db )
     _page_data.Title = title
     _page_data.Css = css
     TOKEN_KEY = key

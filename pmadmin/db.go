@@ -1,4 +1,4 @@
-package dbconn
+package pmadmin
 
 // PM admin db ops
 
@@ -22,7 +22,7 @@ var sql_create_tbl = []string{
     `,
 }
 
-func IsValidUser( user,  password string ) bool {
+func isValidUser( user,  password string ) bool {
     var id int
     err := db.QueryRow( `select id from _pmadmin_users where user = ? AND password = ? UNION select 0 `, user, password ).Scan( &id )
     if err != nil {
@@ -31,7 +31,7 @@ func IsValidUser( user,  password string ) bool {
     return id > 0
 }
 
-func PrepareLoginTable( _db *sql.DB) {
+func prepareLoginTable( _db *sql.DB) {
     db = _db
 
     for _, v := range sql_create_tbl {

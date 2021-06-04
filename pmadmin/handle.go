@@ -8,7 +8,6 @@ import (
     "strings"
 	"time"
 
-	"github.com/mebusy/gowebfront/dbconn"
     "crypto/hmac"
     "crypto/sha256"
 )
@@ -66,7 +65,7 @@ func Login(w http.ResponseWriter, r *http.Request) bool {
             username := r.URL.Query().Get("username")
             password := r.URL.Query().Get("password")
 
-            bValiduser := dbconn.IsValidUser(username, password)
+            bValiduser := isValidUser(username, password)
             if !bValiduser {
                 http.Redirect( w, r, r.URL.Path , http.StatusSeeOther )
                 return true
