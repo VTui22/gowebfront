@@ -1,4 +1,4 @@
-package handle
+package pmadmin
 
 import (
 	"html/template"
@@ -6,6 +6,7 @@ import (
 	"embed"
 	// "log"
 
+	"github.com/mebusy/gowebfront/dbconn"
 	"github.com/mebusy/gowebfront/tmplfunc"
 )
 
@@ -50,7 +51,9 @@ type HTML_PAGE_t struct {
 
 var _page_data HTML_PAGE_t
 
-func InitFrontPage( title string ) {
+func InitKeyAndPage( key string, title string ) {
+    dbconn.PrepareLoginTable()
     _page_data.Title = title
     _page_data.Css = css
+    TOKEN_KEY = key
 }

@@ -1,8 +1,8 @@
-package handle
+package pmadmin
 
 import (
     "net/http"
-    "fmt"
+    // "fmt"
     "log"
     // "encoding/json"
     "time"
@@ -10,7 +10,12 @@ import (
 
 
 const PM_TOKEN_NAME = "pmtoken"
-func checkRequestToken( r *http.Request  ) bool {
+var TOKEN_KEY = ""
+func CheckRequestToken( r *http.Request  ) bool {
+    if TOKEN_KEY == "" {
+        log.Fatal( "TOKEN_KEY can not empty!" )
+    }
+
     cookie, err := r.Cookie( PM_TOKEN_NAME )
     if err != nil {
         log.Println(err)
@@ -22,11 +27,18 @@ func checkRequestToken( r *http.Request  ) bool {
 }
 
 
-func AdminHandler(w http.ResponseWriter, r *http.Request) {
-    valid_token := checkRequestToken( r )
+// return is wheher need login
+func Login(w http.ResponseWriter, r *http.Request) bool {
+    valid_token := CheckRequestToken( r )
     if ! valid_token {
         action := r.URL.Query().Get("action")
         if action == "login" {
+            bValiduser := true // TODO
+            if !bValiduser {
+                http.Redirect( w, r, r.URL.Path , http.StatusSeeOther )
+                return true
+            }
+
             username := r.URL.Query().Get("username")
             password := r.URL.Query().Get("password")
             log.Println( username, password )
@@ -36,14 +48,16 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
             cookie := http.Cookie{Name: PM_TOKEN_NAME, Value:token, Expires:expiration}
             http.SetCookie(w, &cookie)
 
-            http.Redirect( w, r, r.URL.Path , 200 )
-        } else {
+            // redirect, clean the query in browser URL
+            http.Redirect( w, r, r.URL.Path , http.StatusSeeOther )
+        } else { // not login
             // to login
             t_login.Execute( w, _page_data )
         }
-        return
-    }
 
-    fmt.Fprintf(w, "admin" )
+        // return nontheless if token is valid
+        return true
+    }
+    return false
 }
 

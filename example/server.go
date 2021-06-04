@@ -12,7 +12,7 @@ import (
     "strings"
     "server/dbconn"
     "os"
-    "github.com/mebusy/gowebfront/handle"
+    "github.com/mebusy/gowebfront/pmadmin"
 )
 
 func catchAllHandler(w http.ResponseWriter, r *http.Request) {
@@ -56,9 +56,14 @@ func main() {
     r.HandleFunc("/iptest", ipTestHandler)
 
     // 
-    handle.InitFrontPage( "游戏名" )
-    r.HandleFunc("/pmadmin", handle.AdminHandler )
-    r.HandleFunc("/pmadmin/login/{username:[A-Za-z0-9_-]+}/{password:[A-Za-z0-9_-]+}", handle.AdminLoginHandler )
+    pmadmin.InitKeyAndPage( "key",  "游戏名" )
+    r.HandleFunc("/pmadmin", func(w http.ResponseWriter, r *http.Request) {
+        bNeedLogin := pmadmin.Login( w,r )
+        if bNeedLogin {
+            return
+        }
+        fmt.Fprintf(w, "admin" )
+    } )
 
 
     // r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
