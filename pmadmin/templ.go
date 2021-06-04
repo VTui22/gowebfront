@@ -51,7 +51,8 @@ type HTML_PAGE_t struct {
 
 var _page_data HTML_PAGE_t
 
-func InitKeyAndPage( key string, title string, db *sql.DB ) {
+func InitKeyAndPage( key string, title string, db *sql.DB, whitelist []string ) {
+    setWhiteList( whitelist )
     prepareLoginTable( db )
     _page_data.Title = title
     _page_data.Css = css
