@@ -56,7 +56,12 @@ func main() {
     r.HandleFunc("/iptest", ipTestHandler)
 
     // 
-    pmadmin.InitKeyAndPage( "<secret_key>",  "游戏名", db.GetMysqlDB() , []string{ "127.0.0.1/32", "::1/64" } ) // , "10.192.0.0/16"
+    // key for calc hmac
+    // game title
+    // db instance
+    // whitelist
+    // uri_prefix, used when a prefix is add by nginx proxy
+    pmadmin.InitKeyAndPage( "<secret_key>",  "游戏名", db.GetMysqlDB() , []string{ "127.0.0.1/32", "::1/64" }, "" ) // , "10.192.0.0/16"
     r.HandleFunc("/pmadmin", func(w http.ResponseWriter, r *http.Request) {
         bNeedLogin := pmadmin.Login( w,r )
         if bNeedLogin {

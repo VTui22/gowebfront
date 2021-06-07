@@ -51,10 +51,11 @@ type HTML_PAGE_t struct {
 
 var _page_data HTML_PAGE_t
 
-func InitKeyAndPage( key string, title string, db *sql.DB, whitelist []string ) {
+func InitKeyAndPage( key string, title string, db *sql.DB, whitelist []string, uri_prefix string ) {
     setWhiteList( whitelist )
     prepareLoginTable( db )
     _page_data.Title = title
     _page_data.Css = css
     TOKEN_KEY = key
+    _INTERNAL_URI_PREFIX = uri_prefix
 }

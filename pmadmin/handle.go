@@ -12,15 +12,10 @@ import (
     "crypto/hmac"
     "crypto/sha256"
     "strconv"
-    "os"
 )
 
 
 var _INTERNAL_URI_PREFIX string
-func init() {
-    _INTERNAL_URI_PREFIX  = os.Getenv( "INTERNAL_URI_PREFIX" )
-}
-
 
 
 const PM_TOKEN_NAME = "pmtoken"
