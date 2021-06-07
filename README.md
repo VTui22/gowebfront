@@ -78,7 +78,7 @@ func WebPMHandle(w http.ResponseWriter, r *http.Request) {
     // your main page
     var _page_data HTML_PAGE_t
     _page_data.Css = css
-    _page_data.Title = "交叉推广管理后台"
+    _page_data.Title = "Yet Another Title"
     _page_data.GameList = conf.CROSS_PROMOTION_GAMES
     // _page_data.GameList = []string{}
 
