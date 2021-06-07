@@ -12,7 +12,15 @@ import (
     "crypto/hmac"
     "crypto/sha256"
     "strconv"
+    "os"
 )
+
+
+var _INTERNAL_URI_PREFIX string
+func init() {
+    _INTERNAL_URI_PREFIX  = os.Getenv( "INTERNAL_URI_PREFIX" )
+}
+
 
 
 const PM_TOKEN_NAME = "pmtoken"
@@ -91,7 +99,7 @@ func Login(w http.ResponseWriter, r *http.Request) bool {
 
             bValiduser := isValidUser(username, password)
             if !bValiduser {
-                http.Redirect( w, r, r.URL.Path , http.StatusSeeOther )
+                http.Redirect( w, r, _INTERNAL_URI_PREFIX + r.URL.Path , http.StatusSeeOther )
                 return true
             }
 
@@ -102,7 +110,7 @@ func Login(w http.ResponseWriter, r *http.Request) bool {
             http.SetCookie(w, &cookie)
 
             // redirect, clean the query in browser URL
-            http.Redirect( w, r, r.URL.Path , http.StatusSeeOther )
+            http.Redirect( w, r, _INTERNAL_URI_PREFIX + r.URL.Path , http.StatusSeeOther )
         } else { // not login
             // to login
             t_login.Execute( w, _page_data )
