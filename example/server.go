@@ -55,6 +55,10 @@ func main() {
     r.HandleFunc("/doc", docHandler)
     r.HandleFunc("/iptest", ipTestHandler)
 
+
+    // r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+    dbconn.PrepareMysqlTable()
+
     // 
     // key for calc hmac
     // game title
@@ -71,9 +75,6 @@ func main() {
         fmt.Fprintf(w, "admin" )
     } )
 
-
-    // r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-    dbconn.PrepareMysqlTable()
 
     webserver.StartServer(r, *listenPort, *verbose, GitCommit)
 }
