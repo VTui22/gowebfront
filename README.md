@@ -46,6 +46,14 @@ see example/server.go
     dbconn.PrepareMysqlTable()
 ```
 
+to get current user
+
+```go
+        // see following detailed example
+        pm_token := getPmToken(r)
+        user := strings.Split( pm_token , "." )[0]
+```
+
 <details>
 <summary>
 detailed example
