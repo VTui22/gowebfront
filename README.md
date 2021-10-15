@@ -30,6 +30,7 @@ see example/server.go
 
 
 ```go
+    // secret_key to distinct different game to avoid use token in another game
     pmadmin.InitKeyAndPage( "<secret_key>",  "游戏名", db.GetMysqlDB() , []string{ "127.0.0.1/32", "::1/64" }, "/cp" ) // , "10.192.0.0/16"
     r.HandleFunc("/pmadmin", func(w http.ResponseWriter, r *http.Request) {
         bNeedLogin := pmadmin.Login( w,r )
@@ -49,6 +50,8 @@ see example/server.go
 <summary>
 detailed example
 </summary>
+
+webpage source code:
 
 ```go
 package webpm
@@ -268,6 +271,11 @@ func canDelete( startTime, endTime int64 ) bool {
     return true
 }
 ```
+
+-----------
+
+html template:
+
 
 ```html
 <!DOCTYPE html>
