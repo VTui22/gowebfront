@@ -17,3 +17,7 @@ func SafeCss (s string) template.CSS {
 }
 
 
+func SafeJs (s string) template.JS {
+    return template.JS(s)
+}
+
