@@ -80,7 +80,7 @@ func generateToken( username string, exp_seconds int64 ) string {
 func Login(w http.ResponseWriter, r *http.Request) bool {
     xforip := r.Header.Get("X-Forwarded-For")
     if !isInWhiteList( xforip ) {
-        log.Printf( "ip '%s' not in whitelist", xforip )
+        log.Printf( "ip '%s' not in whitelist1111111", xforip )
         fmt.Fprintf( w, "forbiden" )
         return true
     }
